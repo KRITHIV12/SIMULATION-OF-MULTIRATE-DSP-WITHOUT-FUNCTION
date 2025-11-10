@@ -8,38 +8,45 @@ To perform and verify multirate DSP without function using SCILAB.
 PC installed with SCILAB. 
 
 ## PROGRAM : 
-```clc;
-clear;
+```clear;
+clc;
 close;
-N = 100;
-fs = 50;
-t = (0:N-1)/fs;
-f0 = 5;
+n = 0:%pi/50:2*%pi;
+x = sin(%pi*n); 
 
-x = sin(2 * %pi * f0 * t);
+M=input('Enter the downsampling factor');
+L=input('Enter the upsampling factor');
 
-M = 3;
+downsampling_x = x(1:M:length(x));
+disp(x,'Input signal x(n)=');
+disp(downsampling_x,'Downsampled Signal');
+figure(1);
+subplot(2,1,1)
+plot2d3(1:length(x),x);
+xtitle('original singal')
+subplot(2,1,2)
+plot2d3(1:length(downsampling_x),downsampling_x);
+xtitle('Downsampled Signal by a factor of M');
 
-y_down = x(1:M:$);
 
-L = 2;
+upsampling_x=[];
+for i=1:length(x)
+upsampling_x(1,L*i)=x(i);
+end
+disp(x,'Input signal x(n)=');
+disp(upsampling_x,'Upsampled Signal');
+figure(2);
+subplot(2,1,1);
+plot2d3(x);
+title('original signal');
+subplot(2,1,2);
+plot2d3(upsampling_x);
+title('Upsampled Signal by a factor of L');
 
 
-x_upsampled = zeros(1, L * length(y_down));
-x_upsampled(1:L:$) = y_down;
-
-
-h = ones(1, 5) / 5;
-
-y_filtered = conv(x_upsampled, h);
-
-clf;
-subplot(311); plot(t, x); title("Original Signal");
-subplot(312); plot(t(1:M:$), y_down); title("Downsampled Signal");
-subplot(313); plot(1:length(y_filtered), y_filtered); title("Filtered Upsampled Signal");
 ```
 ## OUTPUT: 
-<img width="1908" height="1133" alt="Screenshot 2025-11-10 023054" src="https://github.com/user-attachments/assets/2d8e18c8-0875-44f7-86ff-c9ed8bbbe63d" />
+<img width="754" height="721" alt="Screenshot 2025-11-10 024950" src="https://github.com/user-attachments/assets/51cbb0e6-ba81-49ca-9b86-65dcf8b1c4dc" />
 
 ## RESULT: 
 Thus the decimation process by a factor M and interpolation process by a factor L using 
